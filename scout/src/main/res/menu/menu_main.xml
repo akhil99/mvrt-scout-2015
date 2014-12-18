@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <item android:id="@+id/menu_new_form"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="Sync"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/action_download_json_wifi"
+                android:icon="@drawable/ic_action_cloud"
+                android:title="Download Schedule Over Wifi"/>
+            <item
+                android:id="@+id/action_download_json_bluetooth"
+                android:icon="@drawable/ic_action_bluetooth"
+                android:title="Get Schedule From Super" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_override"
+        android:icon="@drawable/ic_action_edit"
+        android:title="Override Schedule Data"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_set_scout_id"
+        android:icon="@drawable/ic_action_person"
+        android:title="Set Scout ID"
+        app:showAsAction="never"/>
+
+</menu>
