@@ -1,7 +1,7 @@
 package com.mvrt.scout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -112,17 +111,13 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
                             ((ScoutBase)getApplication()).getDataManager().setScoutInitials(input.getText().toString());
                             startAuto(view);
                         }
-
-                        ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                     }
                 });
 
         grabInitials.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                closeKeyboardInput();
             }
         });
 
@@ -192,4 +187,15 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
             return fragmentList.length;
         }
     }
+
+    public void closeKeyboardInput() { //waits for a while, so that the alert dialog closes, then hides keyboard
+        getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) ScoutBase.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }, 50);
+    }
+
 }
