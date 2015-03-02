@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mvrt.superscouter.view.NavDrawerAdapter;
+import com.mvrt.superscouter.adapters.NavDrawerAdapter;
 import com.mvrt.superscouter.view.NavDrawerFragment;
 
 import java.util.ArrayList;
@@ -74,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
     @Override
     public void onStart() {
         super.onStart();
+        setFragment(0);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!btAdapter.isEnabled()) {
             Log.d("btsuper", "enabling bt");

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.mvrt.superscouter.view.NavDrawerFragment;
 import com.mvrt.superscouter.view.SlidingTabLayout;
-import com.mvrt.superscouter.view.TabPagerAdapter;
+import com.mvrt.superscouter.adapters.TabPagerAdapter;
 
 public class PitFragment extends NavDrawerFragment {
 

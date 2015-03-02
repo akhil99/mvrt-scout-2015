@@ -1,6 +1,7 @@
 package com.mvrt.superscouter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mvrt.superscouter.view.TabFragment;
 
@@ -23,6 +25,9 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
     EditText team2;
     EditText team3;
     Button newMatch;
+    TextView allianceView;
+
+    int alliance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +41,25 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
         team2 = (EditText)v.findViewById(R.id.standscout_team2);
         team3 = (EditText)v.findViewById(R.id.standscout_team3);
         newMatch = (Button)v.findViewById(R.id.standscout_button_start);
+        allianceView = (TextView)v.findViewById(R.id.standscout_alliancetextview);
         newMatch.setOnClickListener(this);
+        refreshViews();
+    }
+
+    public void refreshViews(){
+        SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFS_NAME, 0);
+        alliance = prefs.getInt(Constants.PREFS_KEY_ALLIANCE, Constants.ALLIANCE_BLUE);
+        Log.d("MVRT", "refreshing views, alliance = " + alliance);
+        switch(alliance){
+            case Constants.ALLIANCE_BLUE:
+                allianceView.setTextColor(getResources().getColor(R.color.blue_alliance));
+                allianceView.setText("Blue Alliance");
+                break;
+            case Constants.ALLIANCE_RED:
+                allianceView.setTextColor(getResources().getColor(R.color.red_alliance));
+                allianceView.setText("Red Alliance");
+                break;
+        }
     }
 
     @Override
@@ -44,23 +67,25 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
         return "Stand Scouting";
     }
 
-    public void startMatchActivity(String matchName, int team1, int team2, int team3){
+    public void startMatchActivity(int matchNo, int team1, int team2, int team3){
         JSONObject obj = new JSONObject();
         try {
-            obj.put("matchName", matchName);
+            obj.put("matchNo", matchNo);
             obj.put("1", team1);
             obj.put("2", team2);
             obj.put("3", team3);
+            obj.put("alliance", alliance);
             ((SuperScoutBase)getActivity().getApplication()).getBtService().sendToAll(obj);
-            matchNo.setText("");
+            this.matchNo.setText("");
             this.team1.setText("");
             this.team2.setText("");
             this.team3.setText("");
             Intent i = new Intent(getActivity(), MatchScoutActivity.class);
-            i.putExtra("matchNo", matchName);
+            i.putExtra("matchNo", matchNo);
             i.putExtra("team1", team1);
             i.putExtra("team2", team2);
             i.putExtra("team3", team3);
+            i.putExtra("alliance", alliance);
             startActivity(i);
         }catch(JSONException e){
             Log.e("MVRT", "Error forming JSON object");
@@ -95,7 +120,7 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
         }
 
         if(valid){
-            String match = matchNo.getText().toString();
+            int match = Integer.parseInt(matchNo.getText().toString());
             int t1 = Integer.parseInt(team1.getText().toString());
             int t2 = Integer.parseInt(team2.getText().toString());
             int t3 = Integer.parseInt(team3.getText().toString());

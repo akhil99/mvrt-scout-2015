@@ -14,6 +14,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * @author Akhil Palla
+ */
 public class BluetoothService {
 
     private AcceptThread mAcceptThread;
@@ -45,14 +48,29 @@ public class BluetoothService {
         public void onReceived(String data);
     }
 
-    OnReceivedListener listener;
+    OnReceivedListener receivedListener;
 
     public void addOnReceivedListener(OnReceivedListener listener){
-        this.listener = listener;
+        receivedListener = listener;
     }
 
     public void removeOnReceivedListener(){
-        listener = null;
+        receivedListener = null;
+    }
+
+    public interface ConnectionListener{
+        public void onConnected(BluetoothDevice d);
+        public void onDisconnected(BluetoothDevice d);
+    }
+
+    ConnectionListener connListener;
+
+    public void addConnectionListener(ConnectionListener listener){
+        connListener = listener;
+    }
+
+    public void removeConnectionListener(ConnectionListener listener){
+        connListener = null;
     }
 
     /**
@@ -157,7 +175,7 @@ public class BluetoothService {
                     int length = inputStream.read(buffer);
                     String s = new String(buffer, 0, length);
                     Log.d(TAG, "RECIEVED length: " + length + ", data:  " + s);
-                    if(listener != null)listener.onReceived(s);
+                    if(receivedListener != null) receivedListener.onReceived(s);
                 } catch (IOException e) {
                     Log.e(TAG, "IOException in recieving data from bt socket");
                 }

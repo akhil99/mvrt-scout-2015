@@ -20,7 +20,6 @@ public class BluetoothService {
     private BluetoothAdapter btAdapter;
 
     private static final UUID mUUID = UUID.fromString("92541f5f-b6f1-4a35-9856-dd8b5ffb852d");
-    private String DEVICE_NAME = "MVRT_SCOUT";
     private static final String TAG = "BluetoothService";
 
     public BluetoothService(){

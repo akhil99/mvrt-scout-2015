@@ -1,4 +1,4 @@
-package com.mvrt.superscouter.view;
+package com.mvrt.superscouter.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mvrt.superscouter.R;
+import com.mvrt.superscouter.view.NavDrawerFragment;
 
 import java.util.ArrayList;
 

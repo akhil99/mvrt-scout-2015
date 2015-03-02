@@ -2,30 +2,28 @@ package com.mvrt.superscouter;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mvrt.superscouter.view.ScoutingCommentsAdapter;
+import com.mvrt.superscouter.adapters.ScoutingCommentsAdapter;
 import com.mvrt.superscouter.view.TabFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MatchCommentFragment extends TabFragment {
 
     RecyclerView recycler;
     ScoutingCommentsAdapter commentsAdapter;
 
-    int team1;
-    int team2;
-    int team3;
+    int[] teams;
 
-    public static MatchCommentFragment createInstance(int t1, int t2, int t3){
+    public static MatchCommentFragment createInstance(int[] teams){
         MatchCommentFragment frag = new MatchCommentFragment();
-        frag.team1 = t1;
-        frag.team2 = t2;
-        frag.team3 = t3;
+        frag.teams = teams;
         return frag;
     }
 
@@ -37,7 +35,7 @@ public class MatchCommentFragment extends TabFragment {
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState){
-        commentsAdapter = new ScoutingCommentsAdapter(team1, team2, team3);
+        commentsAdapter = new ScoutingCommentsAdapter(teams);
         recycler = (RecyclerView)v.findViewById(R.id.matchscout_comment_recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(commentsAdapter);
@@ -46,5 +44,9 @@ public class MatchCommentFragment extends TabFragment {
     @Override
     public String getTitle() {
         return "Comments";
+    }
+
+    public HashMap<Integer, String> getComments(){
+        return commentsAdapter.getComments();
     }
 }

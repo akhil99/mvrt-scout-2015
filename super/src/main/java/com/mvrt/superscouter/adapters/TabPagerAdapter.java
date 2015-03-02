@@ -1,8 +1,10 @@
-package com.mvrt.superscouter.view;
+package com.mvrt.superscouter.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.mvrt.superscouter.view.TabFragment;
 
 import java.util.ArrayList;
 

@@ -1,16 +1,16 @@
-package com.mvrt.superscouter.view;
+package com.mvrt.superscouter.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mvrt.superscouter.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ScoutingCommentsAdapter extends RecyclerView.Adapter<ScoutingCommentsAdapter.ViewHolder> {
 
@@ -18,16 +18,19 @@ public class ScoutingCommentsAdapter extends RecyclerView.Adapter<ScoutingCommen
     ArrayList<String> comments;
     ArrayList<Integer> teams;
 
+    ArrayList<EditText> commentFields;
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView textView;
         EditText comments;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, ArrayList<EditText> fields) {
             super(itemView);
             itemView.setOnClickListener(this);
             textView = (TextView) itemView.findViewById(R.id.item_comment_teamnumber);
             comments = (EditText) itemView.findViewById(R.id.item_comment_edittext);
+            fields.add(comments);
         }
 
         @Override
@@ -41,21 +44,22 @@ public class ScoutingCommentsAdapter extends RecyclerView.Adapter<ScoutingCommen
 
     }
 
-    public ScoutingCommentsAdapter(int team1, int team2, int team3){
+    public ScoutingCommentsAdapter(int[] tems){
         comments = new ArrayList<>();
-        comments.add("");
-        comments.add("");
-        comments.add("");
         teams = new ArrayList<>();
-        teams.add(team1);
-        teams.add(team2);
-        teams.add(team3);
+        commentFields = new ArrayList<>();
+        for(int i:tems){
+            if(i > 0){
+                comments.add("");
+                teams.add(i);
+            }
+        }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comments,parent,false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, commentFields);
     }
 
     @Override
@@ -67,6 +71,14 @@ public class ScoutingCommentsAdapter extends RecyclerView.Adapter<ScoutingCommen
     @Override
     public int getItemCount() {
         return teams.size();
+    }
+
+    public HashMap<Integer, String> getComments(){
+        HashMap <Integer, String> comments = new HashMap<>();
+        for(int i = 0; i < teams.size(); i++){
+                comments.put(teams.get(i), commentFields.get(i).getText().toString());
+        }
+        return comments;
     }
 
 }

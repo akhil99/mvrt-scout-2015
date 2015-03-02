@@ -8,13 +8,17 @@ import android.view.ViewGroup;
 
 import com.mvrt.superscouter.view.NavDrawerFragment;
 import com.mvrt.superscouter.view.SlidingTabLayout;
-import com.mvrt.superscouter.view.TabPagerAdapter;
+import com.mvrt.superscouter.adapters.TabPagerAdapter;
 
 public class StandsFragment extends NavDrawerFragment {
 
     private SlidingTabLayout slidingTabs;
     TabPagerAdapter adapter;
     private ViewPager viewPager;
+
+    StandScoutFragment scoutFragment;
+    StandRecordsFragment recordsFragment;
+    StandSettingsFragment settingsFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,14 +30,16 @@ public class StandsFragment extends NavDrawerFragment {
     public void onViewCreated(View v, Bundle savedInstanceState){
         viewPager = (ViewPager)v.findViewById(R.id.standscout_viewpager);
         adapter = new TabPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new StandScoutFragment());
-        adapter.addFragment(new StandRecordsFragment());
-        viewPager.setAdapter(adapter);
+        recordsFragment = new StandRecordsFragment();
+        scoutFragment = new StandScoutFragment();
+        settingsFragment = new StandSettingsFragment();
+        adapter.addFragment(scoutFragment);
+        adapter.addFragment(recordsFragment);
+        adapter.addFragment(settingsFragment);
         viewPager.setAdapter(adapter);
         slidingTabs = (SlidingTabLayout)v.findViewById(R.id.standscout_slidingtabs);
         slidingTabs.setSelectedIndicatorColors(getResources().getColor(R.color.accent));
         slidingTabs.setViewPager(viewPager);
-
     }
 
     @Override
@@ -45,4 +51,10 @@ public class StandsFragment extends NavDrawerFragment {
     public int getIcon() {
         return R.drawable.ic_clipboard;
     }
+
+    public void refreshViews(){
+        scoutFragment.refreshViews();
+        settingsFragment.refreshViews();
+    }
+
 }
