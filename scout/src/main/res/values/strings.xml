@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Scouter 2014</string>
+    <string name="app_name">MVRT Scout</string>
     <string name="action_settings">Settings</string>
     <string name="schedule_url">http://www.mvrt.com/qualificationSchedules/qualificationSchedule.json</string>
     <string name="title_auto">Autonomous Scouting</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="rating_description">
+        1 Stars: Not Applicable\n
+        2 Star: Unsuccessful\n
+        3 Stars: Inefficient/Inconsistent\n
+        4 Stars: Decent/Somewhat Consistent\n
+        5 Stars: Powerhouse
+    </string>
 
 </resources>

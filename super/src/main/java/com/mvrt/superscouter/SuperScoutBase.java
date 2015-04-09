@@ -4,21 +4,36 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.firebase.client.Firebase;
+
 /**
- * Created by Lee Mracek on December 10, 2014.
+ * @author Lee Mracek and Akhil Palla
  */
 public class SuperScoutBase extends Application {
 
-    private static Context context;
+    private BluetoothService btService;
+    private DataManager dataManager;
 
-    public final String PREFERENCE_FILE = "com.mvrt.superscouter.preferences";
 
-    public static Context getAppContext(){return context;}
-
+    @Override
     public void onCreate() {
-        context = getApplicationContext();
+        super.onCreate();
+        Firebase.setAndroidContext(this);
+        dataManager = new DataManager();
+    }
 
-        SharedPreferences prefs = getSharedPreferences(PREFERENCE_FILE, MODE_PRIVATE);
+    public DataManager getDataManager(){
+        return dataManager;
+    }
+
+    public BluetoothService getBtService(){
+        return btService;
+    }
+
+    public void initBtService(){
+        if(btService == null) {
+            btService = new BluetoothService(BluetoothService.MODE_SCOUT_MASTER, dataManager);
+        }
     }
 
 }

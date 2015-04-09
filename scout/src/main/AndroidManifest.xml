@@ -1,46 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mvrt.scout"
-    android:installLocation="preferExternal">
+    android:installLocation="preferExternal" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:name="com.mvrt.scout.ScoutBase"
+        android:name=".ScoutBase"
         android:allowBackup="true"
         android:icon="@drawable/ic_mvrtscout"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".CreateRecordActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode = "stateHidden" >
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <fragment
-            android:name="com.mvrt.scout.PregameFragment"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".StandScoutActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme= "@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.CreateRecordActivity" />
-            </fragment>
-        <fragment
-            android:name="com.mvrt.scout.AutoFragment"
-            android:parentActivityName=".MainFragment"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.CreateRecordActivity" />
-        </fragment>
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="scout.mvrt.com" android:pathPrefix="/scout"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

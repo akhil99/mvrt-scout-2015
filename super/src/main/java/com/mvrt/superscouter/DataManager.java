@@ -1,35 +1,82 @@
 package com.mvrt.superscouter;
 
-import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.firebase.client.Firebase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Created by Lee Mracek on December 10, 2014.
- * Handles the syncing and storage of data
- * @author Lee Mracek
+ * @author Akhil Palla
  */
 public class DataManager {
-    SharedPreferences preferences;
-    public final String ALLIANCE_PREFERENCES = "allianceid";
-    private int currentMatch = 1;
-    private int allianceId = 1;
 
-    public DataManager (int currentMatch, SharedPreferences preferences) {
-        setCurrentMatch(currentMatch);
-        this.preferences = preferences;
+    private ArrayList<JSONObject> currentMatchData;
+    private Firebase dataRef;
 
-        allianceId = preferences.getInt(ALLIANCE_PREFERENCES, 1);
-        setAllianceId(allianceId > 1 || allianceId < 6 ? allianceId : 1);
-
-    }
-    public void syncData() {
-        //todo perform full data sync
+    public DataManager(){
+        currentMatchData = new ArrayList<>();
+        dataRef = new Firebase("https://scouting115.firebaseio.com/data");
     }
 
-    private void setAllianceId(int allianceId) {
-        this.allianceId = allianceId;
+    public interface MatchDataAddedListener {
+        public void onDataAdded(JSONObject data);
     }
 
-    public void setCurrentMatch(int currentMatch) {
-        this.currentMatch = currentMatch;
+    MatchDataAddedListener matchDataAddedListener;
+
+    public void setMatchDataAddedListener(MatchDataAddedListener listen){
+        matchDataAddedListener = listen;
     }
+
+    public void addMatchData(JSONObject record){
+        if(matchDataAddedListener != null)matchDataAddedListener.onDataAdded(record);
+        currentMatchData.add(record);
+        saveRecordToFirebase(record);
+    }
+
+    public void saveRecordToFirebase(JSONObject record){
+        try {
+            int team = record.getInt("team");
+            int match = record.getInt("match");
+            String tourn = record.getString("tournament");
+            dataRef.child(getPath(team, match, tourn)).setValue(toMap(record));
+        } catch (JSONException e) {
+            Log.e("MVRT", "JSON exception");
+        }
+    }
+
+    public void saveCommentToFirebase(int team, int matchNo, String tournament, String comment){
+        dataRef.child(getPath(team, matchNo, tournament)).child("team").setValue(team);
+        dataRef.child(getPath(team, matchNo, tournament)).child("match").setValue(matchNo);
+        dataRef.child(getPath(team, matchNo, tournament)).child("tournament").setValue(tournament);
+        dataRef.child(getPath(team, matchNo, tournament)).child("super-comments").setValue(comment);
+    }
+
+    private static Map toMap(JSONObject jsonObject) throws JSONException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        Iterator<String> keysItr = jsonObject.keys();
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            Object value = jsonObject.get(key);
+
+            if(value instanceof JSONObject) {
+                value = toMap((JSONObject)value);
+            }
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    private static String getPath(int team, int matchNo, String tourn){
+        return team + "-" + tourn + ":" + matchNo;
+    }
+
 }

@@ -1,0 +1,112 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Starting Position"
+                android:textSize="18sp"/>
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/scout_auton_start_radio">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scout_auton_start_staging"
+                    android:text="Near Staging Area"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scout_auton_start_landfill"
+                    android:text="Near Landfill"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Bins/Totes"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_bins_checkbox"
+                android:text="Did they grab bins from the step?"/>
+
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:hint="How many? (1-4)"
+                    android:inputType="number"
+                    android:visibility="gone"
+                    android:id="@+id/scout_auton_bins_number" />
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_totes_yellow"
+                android:text="Did they pick up yellow totes?"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="How many? (1-3)"
+                    android:layout_marginStart="50dp"
+                    android:inputType="number"
+                    android:visibility="gone"
+                    android:id="@+id/scout_auton_yellow_number" />
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_totes_interact"
+                android:text="Did they interact with or stack grey totes?"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Mobility"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_mobility"
+                android:text="Did they end in the auton zone?"/>
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_interfere"
+                android:text="Did they interfere with other robots?"/>
+
+            <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="18sp"/>
+
+            <CheckBox
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scout_auton_noshow"
+                android:text="Were they a no-show?"/>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
