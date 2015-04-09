@@ -1,6 +1,7 @@
 package com.mvrt.superscouter;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +18,7 @@ import com.mvrt.superscouter.view.NavDrawerFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.NavItemClickListener{
+public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.NavItemClickListener, BluetoothService.ConnectionListener {
 
     private static final int REQUEST_INIT_BT = 1234;
     private static final int REQUEST_DISCOVERABLE = 3421;
@@ -40,8 +41,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
         setSupportActionBar(toolbar);
 
         fragments = new ArrayList<>();
-        fragments.add(new StandsFragment());
-        fragments.add(new PitFragment());
+        fragments.add(new StandFragment());
         btFrag = new BTFragment();
         fragments.add(btFrag);
 
@@ -56,6 +56,12 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(new NavDrawerAdapter(this, fragments));
 
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        ((SuperScoutBase)getApplication()).getBtService().stop();
     }
 
     @Override
@@ -105,6 +111,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
 
     private void initBtService(){
         ((SuperScoutBase)getApplication()).initBtService();
+        ((SuperScoutBase)getApplication()).getBtService().addConnectionListener(this);
     }
 
     private void enableBT(){
@@ -112,10 +119,37 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
         startActivityForResult(i, REQUEST_INIT_BT);
     }
 
+    private boolean isDiscoverable(){
+        return BluetoothAdapter.getDefaultAdapter().getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
+    }
+
     public void discoverable(boolean discover){
         Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        if(discover == isDiscoverable()){
+            Log.d("MVRT", discover?"Already discoverable":"Already not discoverable");
+            return;
+        }
         enableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, discover?0:1);
         startActivityForResult(enableIntent, discover?REQUEST_DISCOVERABLE:REQUEST_UNDISCOVERABLE);
     }
 
+    @Override
+    public void onConnected(final BluetoothDevice d) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Device: " + d.getName() + " connected!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onDisconnected(final BluetoothDevice d) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Device: " + d.getName() + " disconnected", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

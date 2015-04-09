@@ -4,6 +4,8 @@
     <color name="primary_dark">#4527A0</color>
     <color name="accent">#FFC107</color>
 
+    <color name="navdrawer_bg">#F5F5F5</color>
+
     <color name="text_primary_light">#F5F5F5</color>
     <color name="text_secondary_light">#E0E0E0</color>
 
@@ -21,7 +23,8 @@
     <color name="window_bg_lightwhite">#FAFAFA</color>
     <color name="window_bg_darkgray">#424242</color>
 
-    <color name="button_unpressed_purp">#DD673AB7</color>
+    <color name="button_unpressed_purp">#673AB7</color>
+    <color name="button_pressed_purp">#512DA8</color>
 
     <color name="red_alliance">#EF5350</color>
     <color name="blue_alliance">#3F51B5</color>

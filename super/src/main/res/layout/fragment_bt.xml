@@ -10,6 +10,14 @@
         android:orientation="vertical"
         android:layout_height="fill_parent">
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="BT Device ID: "
+            android:padding="20dp"
+            android:id="@+id/bt_settings_deviceid"/>
+
         <android.support.v7.widget.SwitchCompat
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

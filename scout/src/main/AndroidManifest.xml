@@ -15,42 +15,28 @@
         android:icon="@drawable/ic_mvrtscout"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".CreateRecordActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".StandScoutActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="scout.mvrt.com" android:pathPrefix="/scout"/>
             </intent-filter>
         </activity>
 
-        <fragment
-            android:name="com.mvrt.scout.PregameFragment"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.CreateRecordActivity" />
-        </fragment>
-        <fragment
-            android:name="com.mvrt.scout.AutoFragment"
-            android:parentActivityName=".MainFragment"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.CreateRecordActivity" />
-        </fragment>
-        <activity
-            android:name=".BluetoothActivity"
-            android:label="@string/title_activity_bluetooth" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

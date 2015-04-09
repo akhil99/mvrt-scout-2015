@@ -27,8 +27,8 @@
     </style>
 
     <style name="mvrt_button" parent="android:Widget.Button.Small">
-        <item name="android:background">@drawable/rectangle</item>
-        <item name="android:colorBackground">@color/button_unpressed_purp</item>
+        <item name="android:background">@drawable/mv_button_bg</item>
+        <!-- <item name="android:colorBackground">@color/button_unpressed_purp</item> -->
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/text_primary_light</item>
     </style>

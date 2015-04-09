@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:clickable="true"
+    android:gravity="center_vertical|right"
+    android:layout_marginBottom="5dp"
+    android:background="#DDD">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:text="Filename"
+        android:id="@+id/filename_textview" />
+
+    <ImageButton
+        android:id="@+id/fileview_bt"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_bluetooth" />
+
+    <ImageButton
+        android:id="@+id/fileview_cloud"
+        android:layout_toStartOf="@id/fileview_bt"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_cloud" />
+
+</RelativeLayout>

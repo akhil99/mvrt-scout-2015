@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.mvrt.superscouter.view.TabFragment;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 public class StandScoutFragment extends TabFragment implements View.OnClickListener{
 
@@ -27,11 +24,12 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
     Button newMatch;
     TextView allianceView;
 
-    int alliance;
+    String alliance;
+    String tournamentCode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_standscout_super, container, false);
+        return inflater.inflate(R.layout.fragment_stands_start, container, false);
     }
 
     @Override
@@ -48,16 +46,17 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
 
     public void refreshViews(){
         SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFS_NAME, 0);
-        alliance = prefs.getInt(Constants.PREFS_KEY_ALLIANCE, Constants.ALLIANCE_BLUE);
+        alliance = prefs.getString(Constants.PREFS_KEY_ALLIANCE, Constants.ALLIANCE_BLUE);
+        tournamentCode = prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "SVR");
         Log.d("MVRT", "refreshing views, alliance = " + alliance);
         switch(alliance){
             case Constants.ALLIANCE_BLUE:
                 allianceView.setTextColor(getResources().getColor(R.color.blue_alliance));
-                allianceView.setText("Blue Alliance");
+                allianceView.setText("Blue Alliance @ " + tournamentCode);
                 break;
             case Constants.ALLIANCE_RED:
                 allianceView.setTextColor(getResources().getColor(R.color.red_alliance));
-                allianceView.setText("Red Alliance");
+                allianceView.setText("Red Alliance @ " + tournamentCode);
                 break;
         }
     }
@@ -68,28 +67,25 @@ public class StandScoutFragment extends TabFragment implements View.OnClickListe
     }
 
     public void startMatchActivity(int matchNo, int team1, int team2, int team3){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("matchNo", matchNo);
-            obj.put("1", team1);
-            obj.put("2", team2);
-            obj.put("3", team3);
-            obj.put("alliance", alliance);
-            ((SuperScoutBase)getActivity().getApplication()).getBtService().sendToAll(obj);
-            this.matchNo.setText("");
-            this.team1.setText("");
-            this.team2.setText("");
-            this.team3.setText("");
-            Intent i = new Intent(getActivity(), MatchScoutActivity.class);
-            i.putExtra("matchNo", matchNo);
-            i.putExtra("team1", team1);
-            i.putExtra("team2", team2);
-            i.putExtra("team3", team3);
-            i.putExtra("alliance", alliance);
-            startActivity(i);
-        }catch(JSONException e){
-            Log.e("MVRT", "Error forming JSON object");
-        }
+        String uri = "http://scout.mvrt.com/scout/" + tournamentCode
+                + "/" + matchNo + "/" + alliance
+                + "?t=" + team1
+                + "&t=" + team2
+                + "&t=" + team3;
+        ((SuperScoutBase)getActivity().getApplication()).getBtService().writeToAll(uri);
+        this.matchNo.setText("");
+        this.team1.setText("");
+        this.team2.setText("");
+        this.team3.setText("");
+        Intent i = new Intent(getActivity(), MatchScoutActivity.class);
+        i.putExtra("matchNo", matchNo);
+        i.putExtra("team1", team1);
+        i.putExtra("team2", team2);
+        i.putExtra("team3", team3);
+        i.putExtra("alliance", alliance);
+        i.putExtra("tournament", tournamentCode);
+        i.putExtra("uri", uri);
+        startActivity(i);
     }
 
     private void startMatch(){

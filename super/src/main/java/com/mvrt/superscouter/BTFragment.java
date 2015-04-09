@@ -1,5 +1,7 @@
 package com.mvrt.superscouter;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.mvrt.superscouter.adapters.BtDeviceAdapter;
 import com.mvrt.superscouter.view.NavDrawerFragment;
@@ -20,6 +23,7 @@ public class BTFragment extends NavDrawerFragment {
 
     private SwitchCompat acceptSwitch;
     private SwitchCompat discoverSwitch;
+    private TextView btLabel;
 
     private BluetoothService btService;
 
@@ -47,6 +51,10 @@ public class BTFragment extends NavDrawerFragment {
         discoverSwitch = (SwitchCompat)v.findViewById(R.id.discoverState);
         discoverSwitch.setOnCheckedChangeListener(discoverListener);
         discoverSwitch.setChecked(false);
+
+        btLabel = (TextView)v.findViewById(R.id.bt_settings_deviceid);
+        String name = BluetoothAdapter.getDefaultAdapter().getName();
+        btLabel.setText("Device ID: " + name);
     }
 
     @Override

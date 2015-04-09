@@ -12,5 +12,6 @@
 
     <string name="drawer_open">Open Nav Drawer</string>
     <string name="drawer_close">Close Nav Drawer</string>
+    <string name="title_activity_view_data">View Match Data</string>
 
 </resources>

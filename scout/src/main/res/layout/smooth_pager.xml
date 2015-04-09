@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.mvrt.scout.SmoothPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.mvrt.scout.old.SmoothPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/smooth_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

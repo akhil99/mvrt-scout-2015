@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -20,12 +21,12 @@ import java.util.UUID;
 public class BluetoothService {
 
     private AcceptThread mAcceptThread;
-    private ConnectThread connectThread;
     private ConnectedThread connectedThread;
 
     ArrayList<ConnectedThread> connections;
 
     private BluetoothAdapter btAdapter;
+    private DataManager dataManager;
 
     private static final UUID mUUID = UUID.fromString("92541f5f-b6f1-4a35-9856-dd8b5ffb852d");
     private String DEVICE_NAME = "MVRT_SCOUT";
@@ -38,24 +39,11 @@ public class BluetoothService {
 
     int mode = 0;
 
-    public BluetoothService(int mode){
+    public BluetoothService(int mode, DataManager manager){
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         connections = new ArrayList<>();
+        dataManager = manager;
         this.mode = mode;
-    }
-
-    public interface OnReceivedListener{
-        public void onReceived(String data);
-    }
-
-    OnReceivedListener receivedListener;
-
-    public void addOnReceivedListener(OnReceivedListener listener){
-        receivedListener = listener;
-    }
-
-    public void removeOnReceivedListener(){
-        receivedListener = null;
     }
 
     public interface ConnectionListener{
@@ -73,79 +61,6 @@ public class BluetoothService {
         connListener = null;
     }
 
-    /**
-     * Connects to a device which is awaiting connections
-     * @param device: The device to connect to
-     */
-    public synchronized void connect(BluetoothDevice device){
-        Log.i(TAG, "Connecting to: " + device);
-        if(mode == MODE_SCOUT_MASTER){
-            Log.e(TAG, "ERROR: cannot connect while master");
-        }else if(connectedThread != null) {
-            alreadyConnected();
-        }else if(connectThread != null){
-            alreadyConnecting();
-        }else{
-            connectThread = new ConnectThread(device);
-            connectThread.start();
-        }
-    }
-
-    /**
-     * Connects to a device which is awaiting connections
-     */
-    private class ConnectThread extends Thread{
-
-        private final BluetoothSocket btSocket;
-
-        public ConnectThread(BluetoothDevice dev){
-            BluetoothSocket tmp = null;
-            try{
-                tmp = dev.createRfcommSocketToServiceRecord(mUUID);
-            }catch(IOException e){
-                Log.e(TAG, "socket creation failed", e);
-            }
-            btSocket = tmp;
-        }
-
-        public void run(){
-            Log.i(TAG, "Begin ConnectThread");
-            btAdapter.cancelDiscovery();
-
-            try {
-                // This is a blocking call and will only return on a successful connection or an exception
-                btSocket.connect();
-            } catch (IOException e) {
-                try {
-                    btSocket.close();
-                } catch (IOException e2) {
-                    Log.e(TAG, "unable to close socket during connection failure", e2);
-                    return;
-                }
-                connectionFailed();
-                return;
-            }
-
-            //TODO: Tell the activity that we've connected
-            connectedThread = new ConnectedThread(btSocket);
-            connectedThread.start();
-
-            // Reset the ConnectThread because we're done
-            synchronized (BluetoothService.this) {
-                connectThread = null;
-            }
-        }
-
-        public void cancel() {
-            try {
-                //first close the connectedThread, if it's running
-                if(connectedThread != null) connectedThread.cancel();
-                btSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "closing connect socket failed", e);
-            }
-        }
-    }
 
     private class ConnectedThread extends Thread{
 
@@ -175,7 +90,7 @@ public class BluetoothService {
                     int length = inputStream.read(buffer);
                     String s = new String(buffer, 0, length);
                     Log.d(TAG, "RECIEVED length: " + length + ", data:  " + s);
-                    if(receivedListener != null) receivedListener.onReceived(s);
+                    received(s);
                 } catch (IOException e) {
                     Log.e(TAG, "IOException in recieving data from bt socket");
                 }
@@ -197,6 +112,7 @@ public class BluetoothService {
 
         public void cancel(){
             try {
+                if(connListener != null)connListener.onDisconnected(btSocket.getRemoteDevice());
                 btSocket.close();
                 synchronized (BluetoothService.this){
                     connections.remove(this);
@@ -214,8 +130,11 @@ public class BluetoothService {
     public synchronized void acceptConnections(boolean accept){
         Log.i(TAG, accept?"Accepting connections":"Stopped accepting connectons");
         if(accept){
-            if(mAcceptThread == null)mAcceptThread = new AcceptThread();
-            mAcceptThread.start();
+            if(mAcceptThread == null || !mAcceptThread.isAlive()){
+                Log.d("MVRT", "starting new thread");
+                mAcceptThread = new AcceptThread();
+                mAcceptThread.start();
+            }
         }else{
             if(mAcceptThread != null)mAcceptThread.cancel();
             mAcceptThread = null;
@@ -257,6 +176,7 @@ public class BluetoothService {
                 // If a connection was accepted, start a connected thread with it
                 if (socket != null) {
                     synchronized (BluetoothService.this) {
+                        if(connListener != null)connListener.onConnected(socket.getRemoteDevice());
                         ConnectedThread t = new ConnectedThread(socket);
                         connections.add(t);
                         t.start();
@@ -276,20 +196,16 @@ public class BluetoothService {
         }
     }
 
-    public void sendToAll(JSONObject obj){
-        writeToAll(obj.toString().getBytes());
+    public void writeToAll(String data){
+        writeToAll(data.getBytes());
     }
 
-    private void connectionFailed() {
-        //TODO: Send a failure message back to the Activity
-    }
-
-    private void alreadyConnected() {
-        //TODO: Send a failure message back to the Activity
-    }
-
-    private void alreadyConnecting(){
-        //TODO: Make a toast saying the device is already trying to connect
+    public void received(String data){
+        try {
+            dataManager.addMatchData(new JSONObject(data));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -297,10 +213,6 @@ public class BluetoothService {
      */
     public synchronized void stop() {
         Log.d(TAG, "stopping all BT threads");
-        if (connectThread != null) {
-            connectThread.cancel();
-            connectThread = null;
-        }
         if (connectedThread != null) {
             connectedThread.cancel();
             connectedThread = null;

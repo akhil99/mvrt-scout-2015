@@ -4,22 +4,26 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.firebase.client.Firebase;
+
 /**
  * @author Lee Mracek and Akhil Palla
  */
 public class SuperScoutBase extends Application {
 
-    private static Context context;
+    private BluetoothService btService;
+    private DataManager dataManager;
 
-    BluetoothService btService;
 
-    public final String PREFERENCE_FILE = "com.mvrt.superscouter.preferences";
-
-    public static Context getAppContext(){return context;}
-
+    @Override
     public void onCreate() {
-        context = getApplicationContext();
-        SharedPreferences prefs = getSharedPreferences(PREFERENCE_FILE, MODE_PRIVATE);
+        super.onCreate();
+        Firebase.setAndroidContext(this);
+        dataManager = new DataManager();
+    }
+
+    public DataManager getDataManager(){
+        return dataManager;
     }
 
     public BluetoothService getBtService(){
@@ -28,7 +32,7 @@ public class SuperScoutBase extends Application {
 
     public void initBtService(){
         if(btService == null) {
-            btService = new BluetoothService(BluetoothService.MODE_SCOUT_MASTER);
+            btService = new BluetoothService(BluetoothService.MODE_SCOUT_MASTER, dataManager);
         }
     }
 
