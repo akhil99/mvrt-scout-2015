@@ -38,6 +38,7 @@
                 <data android:scheme="http" android:host="scout.mvrt.com" android:pathPrefix="/view"/>
             </intent-filter>
         </activity>
+        <service android:name=".BtService"/>
     </application>
 
 </manifest>

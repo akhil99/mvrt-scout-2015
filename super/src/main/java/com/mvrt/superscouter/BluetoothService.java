@@ -34,9 +34,6 @@ public class BluetoothService {
 
     private boolean accepting = false;
 
-    public static final int MODE_SCOUT_MASTER = 1;
-    public static final int MODE_SCOUT_SLAVE = 2;
-
     int mode = 0;
 
     public BluetoothService(int mode, DataManager manager){

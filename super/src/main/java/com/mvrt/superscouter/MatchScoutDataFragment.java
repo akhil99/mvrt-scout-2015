@@ -38,7 +38,6 @@ public class MatchScoutDataFragment extends TabFragment implements DataManager.M
         dataRecycler = (RecyclerView)v.findViewById(R.id.matchdata_recycler);
         dataRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         dataAdapter = new MatchRecordListAdapter();
-        ((SuperScoutBase)getActivity().getApplication()).getDataManager().setMatchDataAddedListener(this);
         dataRecycler.setAdapter(dataAdapter);
     }
 

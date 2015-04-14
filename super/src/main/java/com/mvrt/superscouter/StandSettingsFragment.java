@@ -51,7 +51,7 @@ public class StandSettingsFragment extends TabFragment implements RadioGroup.OnC
 
     public void refreshViews(){
         String alliance = prefs.getString(Constants.PREFS_KEY_ALLIANCE, Constants.ALLIANCE_BLUE);
-        String tournament = prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "SVR");
+        String tournament = prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "CASJ");
         Log.d("MVRT", "refreshing views, alliance = " + alliance);
         switch(alliance){
             case Constants.ALLIANCE_BLUE:

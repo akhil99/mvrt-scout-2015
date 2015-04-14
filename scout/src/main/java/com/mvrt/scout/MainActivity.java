@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 
@@ -22,6 +25,8 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.NavItemClickListener, BluetoothService.OnReceivedListener {
 
     private static final int REQUEST_INIT_BT = 1234;
+    private static final int REQUEST_SCAN_QR = 2345;
+
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -98,6 +103,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_INIT_BT && resultCode == RESULT_OK) {
             initBtService();
+        }else if(requestCode == REQUEST_SCAN_QR && resultCode == RESULT_OK){
+            String contents = data.getStringExtra("SCAN_RESULT");
+            Log.d("MVRT", "QR contents: " + contents);
+            onReceived(contents);
         }
     }
 
@@ -120,5 +129,36 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
             i.setData(uri);
             startActivity(i);
         }
+    }
+
+    public void scanQr(){
+        try {
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE"); // "PRODUCT_MODE for bar codes
+            startActivityForResult(intent, REQUEST_SCAN_QR);
+        } catch (Exception e) {
+            Uri marketUri = Uri.parse("market://details?id=com.google.zxing.client.android");
+            Intent marketIntent = new Intent(Intent.ACTION_VIEW,marketUri);
+            startActivity(marketIntent);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_qr_scan:
+                scanQr();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

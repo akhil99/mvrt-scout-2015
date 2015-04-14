@@ -15,14 +15,30 @@
             android:layout_margin="15dp"
             android:id="@+id/standscout_alliancetextview"/>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/standscout_matchId"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="15dp"
-            android:hint="Match # (1)"
-            android:inputType="number"/>
+            android:orientation="horizontal"
+            android:layout_margin="15dp">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/standscout_matchId"
+                android:hint="Match # (1)"
+                android:layout_gravity="center_vertical"
+                android:inputType="number"/>
+
+            <ImageButton
+                android:id="@+id/standscout_button_sync"
+                android:background="@color/background_material_light"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_sync_purple" />
+
+        </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"

@@ -2,10 +2,6 @@ package com.mvrt.scout;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +16,9 @@ import android.widget.Toast;
 
 import com.mvrt.scout.adapters.BtDeviceListAdapter;
 import com.mvrt.scout.view.NavDrawerFragment;
+
+import java.util.List;
+import java.util.Set;
 
 public class BluetoothFragment extends NavDrawerFragment implements BtDeviceListAdapter.ConnectListener{
 
@@ -38,20 +37,7 @@ public class BluetoothFragment extends NavDrawerFragment implements BtDeviceList
         setupSwipeRefresh();
         setupRecycler();
         setupProgressBar();
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               scanDevices();
-            }
-        }, 1000);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            getActivity().unregisterReceiver(mScanReciever); //unregister the scanning reciever
-        } catch (IllegalArgumentException e) {}
+        scanDevices();
     }
 
     private void setupProgressBar(){
@@ -77,34 +63,17 @@ public class BluetoothFragment extends NavDrawerFragment implements BtDeviceList
         scanRecycler.setAdapter(nearbyAdapter);
     }
 
-    BroadcastReceiver mScanReciever = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.d("MVRT", "BT found");
-                nearbyAdapter.add(device);
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                getActivity().unregisterReceiver(mScanReciever);
-                nearbySwipe.setRefreshing(false);
-            }
-        }
-    };
 
     /**
      * Scans for nearby bluetooth devices
      */
     public void scanDevices() {
         Log.d("MVRT", "scanning");
-        nearbySwipe.setRefreshing(true);
-        Log.d("MVRT", "swipe is refreshing: " + nearbySwipe.isRefreshing());
         nearbyAdapter.clear();
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        getActivity().registerReceiver(mScanReciever, filter); // Don't forget to unregister during onDestroy
-        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        getActivity().registerReceiver(mScanReciever, filter);
-        BluetoothAdapter.getDefaultAdapter().startDiscovery();
+        Set<BluetoothDevice> devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+        for(BluetoothDevice dev: devices){
+            nearbyAdapter.add(dev);
+        }
     }
 
     @Override

@@ -57,18 +57,18 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
             fileName = (TextView)v.findViewById(R.id.filename_textview);
             optionClickedInterface = optInt;
 
-            ImageButton wifi = (ImageButton)v.findViewById(R.id.fileview_cloud);
+            ImageButton wifi = (ImageButton)v.findViewById(R.id.fileview_share);
             wifi.setOnClickListener(this);
-            ImageButton bt = (ImageButton)v.findViewById(R.id.fileview_bt);
+            ImageButton bt = (ImageButton)v.findViewById(R.id.fileview_delete);
             bt.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v){
-            if(v.getId() == R.id.fileview_bt){
-                optionClickedInterface.btSyncOptionClicked(fileName.getText().toString());
-            }else if(v.getId() == R.id.fileview_cloud){
-                optionClickedInterface.cloudSyncOptionClicked(fileName.getText().toString());
+            if(v.getId() == R.id.fileview_share){
+                optionClickedInterface.shareOptionClicked(fileName.getText().toString());
+            }else if(v.getId() == R.id.fileview_delete){
+                optionClickedInterface.deleteOptionClicked(fileName.getText().toString());
             }
         }
 
@@ -78,8 +78,8 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
     }
 
     public interface OptionClickedInterface{
-        public void btSyncOptionClicked(String filename);
-        public void cloudSyncOptionClicked(String filename);
+        public void shareOptionClicked(String filename);
+        public void deleteOptionClicked(String filename);
     }
 
 }

@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/standsettings_tourament_id"
             android:inputType="textCapCharacters"
-            android:hint="ie. SVR"
+            android:hint="ie. CASJ"
             android:layout_marginRight="10dp"/>
 
         <Button
@@ -60,6 +60,13 @@
             android:text="Save"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/tournament_codes"
+        android:layout_marginBottom="10dp"/>
 
 
 </LinearLayout>
