@@ -2,8 +2,13 @@ package com.mvrt.superscouter;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,11 +23,9 @@ import com.mvrt.superscouter.view.NavDrawerFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.NavItemClickListener, BluetoothService.ConnectionListener {
+public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.NavItemClickListener {
 
     private static final int REQUEST_INIT_BT = 1234;
-    private static final int REQUEST_DISCOVERABLE = 3421;
-    private static final int REQUEST_UNDISCOVERABLE = 2341;
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -55,13 +58,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(new NavDrawerAdapter(this, fragments));
-
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        ((SuperScoutBase)getApplication()).getBtService().stop();
     }
 
     @Override
@@ -86,7 +82,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
             Log.d("btsuper", "enabling bt");
             enableBT();
         } else{
-            initBtService();
+            startBtService();
         }
     }
 
@@ -101,55 +97,25 @@ public class MainActivity extends ActionBarActivity implements NavDrawerAdapter.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_INIT_BT && resultCode == RESULT_OK) {
-            initBtService();
-        }else if(requestCode == REQUEST_DISCOVERABLE){
-            btFrag.isDiscoverable(resultCode == 1);
-        }else if(requestCode == REQUEST_UNDISCOVERABLE){
-            btFrag.isDiscoverable(resultCode != 1);
+            startBtService();
         }
     }
 
-    private void initBtService(){
-        ((SuperScoutBase)getApplication()).initBtService();
-        ((SuperScoutBase)getApplication()).getBtService().addConnectionListener(this);
-    }
-
-    private void enableBT(){
+    private void enableBT() {
         Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(i, REQUEST_INIT_BT);
     }
 
-    private boolean isDiscoverable(){
-        return BluetoothAdapter.getDefaultAdapter().getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
+    public void startBtService(){
+        Log.d("MVRT", "Starting BT serv");
+        Intent intent = new Intent(getApplicationContext(), BtService.class);
+        intent.setAction(BtService.START_SERVER);
+        getApplicationContext().startService(intent);
     }
 
-    public void discoverable(boolean discover){
-        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        if(discover == isDiscoverable()){
-            Log.d("MVRT", discover?"Already discoverable":"Already not discoverable");
-            return;
-        }
-        enableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, discover?0:1);
-        startActivityForResult(enableIntent, discover?REQUEST_DISCOVERABLE:REQUEST_UNDISCOVERABLE);
+    public void stopBtService(){
+        Log.d("MVRT", "Stopping BT serv");
+        getApplicationContext().stopService(new Intent(getApplicationContext(), BtService.class));
     }
 
-    @Override
-    public void onConnected(final BluetoothDevice d) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, "Device: " + d.getName() + " connected!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    @Override
-    public void onDisconnected(final BluetoothDevice d) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, "Device: " + d.getName() + " disconnected", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

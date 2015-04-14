@@ -17,16 +17,14 @@ import java.util.Map;
  */
 public class DataManager {
 
-    private ArrayList<JSONObject> currentMatchData;
     private Firebase dataRef;
 
     public DataManager(){
-        currentMatchData = new ArrayList<>();
         dataRef = new Firebase("https://scouting115.firebaseio.com/data");
     }
 
     public interface MatchDataAddedListener {
-        public void onDataAdded(JSONObject data);
+        void onDataAdded(JSONObject data);
     }
 
     MatchDataAddedListener matchDataAddedListener;
@@ -37,7 +35,6 @@ public class DataManager {
 
     public void addMatchData(JSONObject record){
         if(matchDataAddedListener != null)matchDataAddedListener.onDataAdded(record);
-        currentMatchData.add(record);
         saveRecordToFirebase(record);
     }
 

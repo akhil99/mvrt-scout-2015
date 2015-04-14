@@ -13,5 +13,18 @@
     <string name="drawer_open">Open Nav Drawer</string>
     <string name="drawer_close">Close Nav Drawer</string>
     <string name="title_activity_view_data">View Match Data</string>
+    <string name="tournament_codes">
+        Utah - UTWV\n
+        Silicon Valley - CASJ\n
+        Archimedes - ARC\n
+        Tesla - TES\n
+        Curie - CUR\n
+        Carver - CARV\n
+        Galileo - GAL\n
+        Carson - CARS\n
+        Hopper - HOP\n
+        Newton - NEW\n
+        Einstein - CMP\n
+    </string>
 
 </resources>
