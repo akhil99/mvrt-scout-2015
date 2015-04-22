@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:text="Nearby Devices (swipe down to refresh)"
+            android:text="Paired Devices"
             android:textSize="14sp"
             android:layout_height="48dp"
             android:gravity="center_vertical"
@@ -21,17 +21,11 @@
             android:paddingLeft="16dp"
             style="?android:attr/progressBarStyleLarge" />
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/nearby_devices_swipe_refresh"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
             <android.support.v7.widget.RecyclerView
                 android:layout_width="fill_parent"
                 android:scrollbars="vertical"
                 android:layout_height="fill_parent"
                 android:id="@+id/list_nearby_devices"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

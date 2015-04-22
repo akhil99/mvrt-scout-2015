@@ -22,7 +22,6 @@ import java.util.Set;
 
 public class BluetoothFragment extends NavDrawerFragment implements BtDeviceListAdapter.ConnectListener{
 
-    SwipeRefreshLayout nearbySwipe;
     BtDeviceListAdapter nearbyAdapter;
     ProgressBar btProgress;
 
@@ -34,7 +33,6 @@ public class BluetoothFragment extends NavDrawerFragment implements BtDeviceList
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        setupSwipeRefresh();
         setupRecycler();
         setupProgressBar();
         scanDevices();
@@ -46,15 +44,6 @@ public class BluetoothFragment extends NavDrawerFragment implements BtDeviceList
         btProgress.setVisibility(View.GONE);
     }
 
-    private void setupSwipeRefresh() {
-        nearbySwipe = (SwipeRefreshLayout)getView().findViewById(R.id.nearby_devices_swipe_refresh);
-        nearbySwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                scanDevices();
-            }
-        });
-    }
 
     public void setupRecycler() {
         nearbyAdapter = new BtDeviceListAdapter(this);
@@ -65,7 +54,7 @@ public class BluetoothFragment extends NavDrawerFragment implements BtDeviceList
 
 
     /**
-     * Scans for nearby bluetooth devices
+     * Lists paired devices
      */
     public void scanDevices() {
         Log.d("MVRT", "scanning");
