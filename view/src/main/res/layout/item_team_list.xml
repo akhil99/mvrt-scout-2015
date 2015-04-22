@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/primary"
+            android:text="1"
+            android:textSize="30sp"
+            android:id="@+id/teamlistitem_rank"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:text="115"
+            android:textSize="15sp"
+            android:id="@+id/teamlistitem_score"/>
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:background="@color/primary"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary_dark"
+            android:singleLine="true"
+            android:text="115 - MVRT"
+            android:textSize="24sp"
+            android:id="@+id/teamlistitem_teamname"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:text="OPR 900 &#8901; Avg 115"
+            android:textColor="@color/text_secondary_dark"
+            android:textSize="15sp"
+            android:id="@+id/teamlistitem_teamstats"/>
+    </LinearLayout>
+
+</LinearLayout>

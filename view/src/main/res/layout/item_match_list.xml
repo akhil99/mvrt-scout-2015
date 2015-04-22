@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary_dark"
+            android:singleLine="true"
+            android:text="qm31"
+            android:textSize="26sp"
+            android:id="@+id/matchlistitem_title"/>
+
+        <LinearLayout
+            android:gravity="end"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_alliance"
+                android:id="@+id/matchlistitem_red"
+                android:text="red"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_alliance"
+                android:id="@+id/matchlistitem_blue"
+                android:text="blue"/>
+        </LinearLayout>
+
+</LinearLayout>

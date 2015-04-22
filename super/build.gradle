@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
-
+    buildToolsVersion '22.0.1'
+    compileSdkVersion 22
     defaultConfig {
         applicationId "com.mvrt.superscouter"
         minSdkVersion 17
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
     }
     buildTypes {
         release {
@@ -17,16 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE-FIREBASE.txt'
-        exclude 'META-INF/NOTICE'
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.firebase:firebase-client-android:2.2.1+'
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.firebase:firebase-client-android:2.2.3+'
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
 }

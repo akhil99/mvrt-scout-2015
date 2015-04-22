@@ -91,7 +91,7 @@ public class BtService extends Service {
             Intent thisService = new Intent(getApplicationContext(), BtService.class);
             thisService.setAction(STOP_SERVER);
             PendingIntent stop = PendingIntent.getService(getApplicationContext(), 0, thisService, 0);
-            NotificationCompat.Action a = new NotificationCompat.Action(R.drawable.ic_bluetooth, "Stop Service", stop);
+            NotificationCompat.Action a = new NotificationCompat.Action(R.drawable.ic_bluetooth_purple, "Stop Service", stop);
 
             Notification notif = new NotificationCompat.Builder(this)
                     .setContentTitle("MVRT Super Scout")

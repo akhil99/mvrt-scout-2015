@@ -49,7 +49,7 @@ public class StandFragment extends NavDrawerFragment {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_clipboard;
+        return R.drawable.ic_clipboard_purple;
     }
 
     public void refreshViews(){

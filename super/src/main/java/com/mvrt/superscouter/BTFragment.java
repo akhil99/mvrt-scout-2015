@@ -1,13 +1,7 @@
 package com.mvrt.superscouter;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -17,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mvrt.superscouter.adapters.BtDeviceAdapter;
 import com.mvrt.superscouter.view.NavDrawerFragment;
@@ -62,7 +55,7 @@ public class BTFragment extends NavDrawerFragment {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_bluetooth;
+        return R.drawable.ic_bluetooth_purple;
     }
 
 

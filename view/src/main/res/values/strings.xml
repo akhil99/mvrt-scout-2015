@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MVRT Scout Viewer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_bluetoth_master">Bluetooth Master</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">Super Scouter</string>
+
+    <string name="drawer_open">Open Nav Drawer</string>
+    <string name="drawer_close">Close Nav Drawer</string>
+    <string name="title_activity_view_data">View Match Data</string>
+    <string name="tournament_codes">
+        Utah - UTWV\n
+        Silicon Valley - CASJ\n
+        Archimedes - ARC\n
+        Tesla - TES\n
+        Curie - CUR\n
+        Carver - CARV\n
+        Galileo - GAL\n
+        Carson - CARS\n
+        Hopper - HOP\n
+        Newton - NEW\n
+        Einstein - CMP\n
+    </string>
+    <string name="title_activity_team">Team Info</string>
+
+</resources>

@@ -1,0 +1,31 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mvrt.scoutview.TeamActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="16dp">
+
+            <lecho.lib.hellocharts.view.PieChartView
+                android:id="@+id/chart_pie_totes"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="10dp"/>
+
+            <lecho.lib.hellocharts.view.ColumnChartView
+                android:id="@+id/chart_col_totes"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import com.mvrt.superscouter.view.TabFragment;
 public class StandSettingsFragment extends TabFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener{
 
     TextView allianceLabel;
-    TextView tournamentCode;
+    EditText tournamentCode;
     Button tournamentSave;
     RadioGroup radioButtons;
     SharedPreferences prefs;
@@ -35,7 +36,7 @@ public class StandSettingsFragment extends TabFragment implements RadioGroup.OnC
         radioButtons.setOnCheckedChangeListener(this);
 
         allianceLabel = (TextView)v.findViewById(R.id.standscout_settings_alliancelabel);
-        tournamentCode = (TextView)v.findViewById(R.id.standsettings_tourament_id);
+        tournamentCode = (EditText)v.findViewById(R.id.standsettings_tourament_id);
         tournamentCode.setFilters(new InputFilter[] { new InputFilter.AllCaps() });
 
         tournamentSave = (Button)v.findViewById(R.id.standsettings_tournament_save);

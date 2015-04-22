@@ -1,1 +1,1 @@
-include ':scout', ':super'
+include ':scout', ':super', ':view', ':admin', ':volley'
