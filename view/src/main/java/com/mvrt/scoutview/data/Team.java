@@ -138,7 +138,7 @@ public class Team implements Comparable<Team> {
             case SORT_AVG:
                 return (int)(100 * (o.avg - this.avg));
             case SORT_OPR:
-                return (int)(100 * (o.avg - this.avg));
+                return (int)(100 * (o.OPR - this.OPR));
             default:
                 return 0;
         }

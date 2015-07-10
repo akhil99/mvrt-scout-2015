@@ -1,5 +1,6 @@
 package com.mvrt.scoutview;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -105,11 +106,15 @@ public class TeamActivity extends ActionBarActivity {
 
 
     public void loadScoutingInfo(){
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME, 0);
         Firebase dataRef = new Firebase("http://scouting115.firebaseio.com/data");
+        final String event = "2015" + prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "casj");
         dataRef.orderByChild("team").equalTo(team.getTeamNo()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot match : dataSnapshot.getChildren()) {
+                    if(match.child("tournament").getValue(String.class).equalsIgnoreCase(event))continue;
+                    if(match.child("teleop").getValue() == null)continue;
                     int matchNo = match.child("match").getValue(Integer.class);
                     Log.d("MVRT", "Match number: " + matchNo);
                     MatchData d = new MatchData(matchNo, team.getTeamNo());

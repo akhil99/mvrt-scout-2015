@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Development\android\projects\mvrt-scout\volley\src\main\res"/><source path="C:\Development\android\projects\mvrt-scout\volley\build\generated\res\rs\release"/><source path="C:\Development\android\projects\mvrt-scout\volley\build\generated\res\generated\release"/></dataSet><dataSet config="release"><source path="C:\Development\android\projects\mvrt-scout\volley\src\release\res"/></dataSet><mergedItems/></merger>

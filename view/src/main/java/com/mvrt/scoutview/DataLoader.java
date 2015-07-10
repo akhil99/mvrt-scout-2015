@@ -1,6 +1,7 @@
 package com.mvrt.scoutview;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,10 +29,12 @@ public class DataLoader{
 
     ViewBase viewBase;
     TBARequests requests;
+    SharedPreferences prefs;
 
     public DataLoader(ViewBase v){
         viewBase = v;
         requests = new TBARequests(v.getApplicationContext());
+        prefs = v.getSharedPreferences(Constants.PREFS_NAME, 0);
     }
 
 
@@ -41,7 +44,7 @@ public class DataLoader{
     }
 
     public void loadTeams(final TeamsLoadedListener loadedListener){
-        String event = "2015casj";
+        String event = "2015" + prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "casj");
         Log.d("MVRT", "Loading teams");
         Firebase eventTeamsRef = new Firebase("http://scouting115.firebaseio.com/event_teams");
         eventTeamsRef.child(event).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -101,7 +104,7 @@ public class DataLoader{
     }
 
     public void loadOprs(final OPRLoadedListener loadedListener){
-        String event = "2015casj";
+        String event = "2015" + prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "casj");
         Log.d("MVRT", "Loading OPRs");
         requests.loadStats(event, new Response.Listener<JSONObject>() {
             @Override
@@ -136,7 +139,7 @@ public class DataLoader{
     }
 
     public void loadRankData(final RankDataLoadedListener loadedListener){
-        String event = "2015casj";
+        String event = "2015" + prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "casj");
         Log.d("MVRT", "Loading Rank Data");
         requests.loadRanks(event, new Response.Listener<JSONArray>() {
             @Override

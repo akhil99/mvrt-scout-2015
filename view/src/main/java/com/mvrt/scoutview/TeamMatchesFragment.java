@@ -1,5 +1,6 @@
 package com.mvrt.scoutview;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,12 +52,14 @@ public class TeamMatchesFragment extends TabFragment implements MatchListAdapter
 
     public void loadMatches(){
         Team t = ((TeamActivity)getActivity()).getTeam();
-
+        SharedPreferences prefs = getActivity().getSharedPreferences(Constants.PREFS_NAME, 0);
+        final String event = "2015" + prefs.getString(Constants.PREFS_KEY_TOURNAMENT, "casj");
         final Firebase schedRef = new Firebase("https://scouting115.firebaseio.com/sched");
         schedRef.orderByChild("team").equalTo("frc" + t.getTeamNo()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot match:dataSnapshot.getChildren()){
+                    if(!match.child("event").getValue(String.class).equalsIgnoreCase(event))continue;
                     String matchKey = match.child("match").getValue(String.class);
                     final String matchId = matchKey.substring(matchKey.indexOf("_") + 1);
                     final long time = match.child("time").getValue(Long.class);
